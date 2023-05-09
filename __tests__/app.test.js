@@ -14,7 +14,7 @@ describe.only('GET /api', () => {
     test('get status 200 response', () => {
         return request(app).get('/api').expect(200);
     });
-    test('returns JSON object', () => {
+    test('returns object containing all of the available endpoints of the api', () => {
         return request(app).get('/api').expect(200).then((response)=> {
             expect(response.body.endpoints).toEqual({
                 "GET /api": {
