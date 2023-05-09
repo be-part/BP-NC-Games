@@ -1,9 +1,7 @@
 const express = require('express');
 const app = express();
-const connection = require('../db/connection');
 const { getCategories } = require('./controllers/categories.controllers');
 
-app.use(express.json());
 
 
 app.get('/api/categories', getCategories)
