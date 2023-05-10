@@ -47,7 +47,7 @@ describe('GET /api/reviews/:review_id', () => {
       .get("/api/reviews/1")
       .expect(200)
       .then((response) => {
-          expect(typeof response.body.review.review_id).toBe("number");
+          expect(response.body.review.review_id).toBe(1);
           expect(typeof response.body.review.title).toBe("string");
           expect(typeof response.body.review.review_body).toBe("string");
           expect(typeof response.body.review.designer).toBe("string");
