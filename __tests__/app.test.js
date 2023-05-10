@@ -12,10 +12,10 @@ afterAll(() => {
 })
 
 describe('GET /api', () => {
-    test('get status 200 response', () => {
+    test('Get status 200 response', () => {
         return request(app).get('/api').expect(200);
     });
-    test('returns object containing all of the available endpoints of the api', () => {
+    test('Returns object containing all of the available endpoints of the api', () => {
         return request(app).get('/api').expect(200).then((response)=> {
             expect(response.body.endpoints).toEqual(endpoints)
               
@@ -24,10 +24,10 @@ describe('GET /api', () => {
 });
 
 describe('GET /api/categories', () => {
-    test('get status 200 response', () => {
+    test('Get status 200 response', () => {
         return request(app).get('/api/categories').expect(200);
     });
-    test('returns all information in the categories table including slug and description', () => {
+    test('Returns all information in the categories table including slug and description', () => {
         return request(app).get('/api/categories').expect(200).then((response)=> {
             expect(response.body.categories.length).toBe(4);
             response.body.categories.forEach((category)=> {
@@ -77,3 +77,37 @@ describe('GET /api/reviews/:review_id', () => {
 
 });
 
+describe('GET /api/reviews', () => {
+  test('Get status 200 response', () => {
+    return request(app)
+    .get('/api/reviews')
+    .expect(200);
+  });
+  test('Return an array of review objects with correct properties', () => {
+    return request(app)
+    .get('/api/reviews')
+    .expect(200)
+    .then((response) => {
+      expect(response.body.reviews.length).toBe(13)
+      response.body.reviews.forEach((review)=> {
+          expect(typeof review.owner).toBe("string");
+          expect(typeof review.title).toBe("string");
+          expect(typeof review.review_id).toBe("number");
+          expect(typeof review.category).toBe("string");
+	        expect(typeof review.review_img_url).toBe("string");
+	        expect(typeof review.created_at).toBe("string");
+	        expect(typeof review.votes).toBe("number");
+	        expect(typeof review.designer).toBe("string");
+          expect(typeof review.comment_count).toBe("string");
+      })
+    })
+  });
+  test('Return array of review objects sorted by date in descending order', () => {
+    return request(app)
+    .get('/api/reviews')
+    .expect(200)
+    .then((response) => {
+      expect(response.body.reviews).toBeSortedBy('created_at', { descending: true})
+    })
+  });
+})
