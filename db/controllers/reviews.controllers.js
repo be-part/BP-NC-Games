@@ -12,5 +12,7 @@ exports.getReviews = (request, response, next) => {
 exports.getReviewsWithCount = (request, response) => {
     fetchReviewsWithCount().then((reviews) => {
         response.status(200).send({ reviews: reviews})
-    })
+    }).catch((err) => {
+      next(err)
+    });
 }
