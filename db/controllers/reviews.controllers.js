@@ -1,4 +1,4 @@
-const { fetchReviews } = require("../models/reviews.models")
+const { fetchReviews, fetchReviewsWithCount } = require("../models/reviews.models")
 
 exports.getReviews = (request, response, next) => {
     fetchReviews(request.params.review_id).then((reviews)=>{
@@ -7,4 +7,12 @@ exports.getReviews = (request, response, next) => {
       .catch((err) => {
         next(err)
       });
+}
+
+exports.getReviewsWithCount = (request, response) => {
+    fetchReviewsWithCount().then((reviews) => {
+        response.status(200).send({ reviews: reviews})
+    }).catch((err) => {
+      next(err)
+    });
 }

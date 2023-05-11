@@ -2,11 +2,13 @@ const express = require('express');
 const app = express();
 const { getCategories} = require('./controllers/categories.controllers');
 const { getEndpoints } = require('./controllers/endpoints.controller');
-const { getReviews } = require('./controllers/reviews.controllers');
+const { getReviews, getReviewsWithCount } = require('./controllers/reviews.controllers');
 
 app.get('/api', getEndpoints)
 
 app.get('/api/categories', getCategories)
+
+app.get('/api/reviews', getReviewsWithCount)
 
 app.get('/api/reviews/:review_id', getReviews)
 
