@@ -20,5 +20,26 @@ const { checkReviewIdExists } = require("../utils/db.utils");
     .then((result) => {
         return result.rows;
     })
-    };
+};
 
+
+exports.addComment = (newComment, reviewId) => {
+    
+    const queryString = `
+    INSERT INTO comments
+    (body, review_id, author)
+    VALUES
+    ($1, $2, $3)
+    RETURNING *`;
+
+    const valuesToAdd = [newComment.body, reviewId, newComment.username]
+        
+    return checkReviewIdExists(reviewId)
+    .then(() => {
+        return connection.query(queryString, valuesToAdd);
+    })
+    .then((result) => {
+        return result.rows;
+    })
+        
+}

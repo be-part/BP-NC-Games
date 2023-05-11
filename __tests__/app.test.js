@@ -58,7 +58,7 @@ describe('GET /api/reviews/:review_id', () => {
 	        expect(typeof response.body.review.created_at).toBe("string");
       });
   });
-  test("Return error 404 and message of 'that id does not exist!'", () => {
+  test("Return error 404 and message of 'no review found at this id!'", () => {
     return request(app)
       .get('/api/reviews/20')
       .expect(404)
@@ -162,5 +162,62 @@ describe('GET /api/reviews/:review_id/comments', () => {
       .then((response) => {
       expect(response.body.msg).toBe('bad request')
       })
+  });
+});
+
+describe("/api/reviews/:review_id/comments", () => {
+  test("Get status 201 response", () => {
+  const newComment = {
+        username: "mallionaire",
+        body: "giant Jenga is better",
+      };
+      return request(app)
+        .post("/api/reviews/2/comments")
+        .send(newComment)
+        .expect(201)
+  })  
+  test("Get status 201 response and an object containing the newly posted comment", () => {
+      const newComment = {
+        username: "mallionaire",
+        body: "giant Jenga is better",
+      };
+      return request(app)
+        .post("/api/reviews/2/comments")
+        .send(newComment)
+        .expect(201)
+        .then((response) => {
+          expect(response.body.comment.comment_id).toBe(7);
+          expect(response.body.comment.body).toBe("giant Jenga is better");
+          expect(response.body.comment.review_id).toBe(2);
+          expect(response.body.comment.author).toBe("mallionaire");
+          expect(response.body.comment.votes).toBe(0);
+          expect(typeof response.body.comment.created_at).toBe("string");
+          });
+  });
+  test("Return error 404 and message of 'no review found at this id!'", () => {
+   const newComment = {
+        username: "be-part",
+        body: "giant Jenga is better",
+      };
+  return request(app)
+  .post("/api/reviews/20/comments")
+        .send(newComment)
+        .expect(404)
+        .then((response) => {
+         expect(response.body.msg).toBe('no review found at this id!')
+        })
+  });
+  test("Return error 400 and message of 'bad request'", () => {
+   const newComment = {
+        username: "be-part",
+        body: "giant Jenga is better",
+      };
+  return request(app)
+  .post("/api/reviews/NotAnId/comments")
+        .send(newComment)
+        .expect(400)
+        .then((response) => {
+         expect(response.body.msg).toBe('bad request')
+        })
   });
 });
