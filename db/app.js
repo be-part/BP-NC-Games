@@ -3,6 +3,7 @@ const app = express();
 const { getCategories} = require('./controllers/categories.controllers');
 const { getEndpoints } = require('./controllers/endpoints.controller');
 const { getReviews, getReviewsWithCount } = require('./controllers/reviews.controllers');
+const { getReviewComments } = require('./controllers/comments.controllers');
 
 app.get('/api', getEndpoints)
 
@@ -11,6 +12,8 @@ app.get('/api/categories', getCategories)
 app.get('/api/reviews', getReviewsWithCount)
 
 app.get('/api/reviews/:review_id', getReviews)
+
+app.get('/api/reviews/:review_id/comments', getReviewComments)
 
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {

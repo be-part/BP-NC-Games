@@ -111,3 +111,56 @@ describe('GET /api/reviews', () => {
     })
   });
 })
+
+describe('GET /api/reviews/:review_id/comments', () => {
+  test("Get status 200 response", () => {
+    return request(app).get("/api/reviews/3/comments").expect(200);
+  });
+  test("Returns array containing comments objects that correspond to the review_id", () => {
+    return request(app)
+      .get("/api/reviews/3/comments")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.comments.length).toBe(3)
+        response.body.comments.forEach((comment) => {
+          expect(typeof comment.comment_id).toBe("number");
+          expect(typeof comment.votes).toBe("number");
+          expect(typeof comment.created_at).toBe("string");
+          expect(typeof comment.author).toBe("string");
+          expect(typeof comment.body).toBe("string");
+	        expect(comment.review_id).toBe(3);
+        })
+      });
+  });
+  test("Returns empty array if review_id does not contain any comments", () => {
+    return request(app)
+      .get("/api/reviews/1/comments")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.comments.length).toBe(0)
+      });
+  });
+  test("Comments are sorted by date with most recent first", () => {
+    return request(app)
+      .get('/api/reviews/3/comments')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.comments).toBeSortedBy('created_at', {descending: true});})
+  });
+  test("Return error 404 and message of 'no review found at this id!", () => {
+    return request(app)
+      .get('/api/reviews/20/comments')
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe('no review found at this id!')
+      })
+  });
+  test("Return error 400 and a message of 'bad request'", () => {
+    return request(app)
+      .get('/api/reviews/notAnID/comments')
+      .expect(400)
+      .then((response) => {
+      expect(response.body.msg).toBe('bad request')
+      })
+  });
+});
