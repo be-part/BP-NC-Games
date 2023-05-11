@@ -165,7 +165,7 @@ describe('GET /api/reviews/:review_id/comments', () => {
   });
 });
 
-describe.only("/api/reviews/:review_id/comments", () => { 
+describe("POST /api/reviews/:review_id/comments", () => { 
   test("Get status 201 response and an object containing the newly posted comment", () => {
       const newComment = {
         username: "mallionaire",
