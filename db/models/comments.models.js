@@ -26,11 +26,8 @@ exports.fetchReviewComments = (reviewId) => {
 
 exports.addComment = (newComment, reviewId) => {
     
-    if (Object.keys(newComment).length !== 2 ) {
-        return Promise.reject({ status: 400, msg: "bad request" })
-    }
 
-    if (!newComment.hasOwnProperty('username') && !newComment.hasOwnProperty('body')) {
+    if (!newComment.hasOwnProperty('username') || !newComment.hasOwnProperty('body')) {
         return Promise.reject({ status: 400, msg: "bad request" })
     }
 

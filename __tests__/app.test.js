@@ -222,19 +222,25 @@ describe.only("/api/reviews/:review_id/comments", () => {
           expect(response.body.msg).toBe('bad request')
          })
    });
-  test("Return error 400 and message of 'bad request' if message body has extra properties", () => {
+  test("Get status 201 response and an object containing the newly posted comment, ignoring extra properties", () => {
     const newComment = {
          username: "mallionaire",
          body: "giant Jenga is better",
-         votes: 7
+         rating: 7
        };
    return request(app)
    .post("/api/reviews/2/comments")
          .send(newComment)
-         .expect(400)
+         .expect(201)
          .then((response) => {
-          expect(response.body.msg).toBe('bad request')
-         })
+          expect(response.body.comment.comment_id).toBe(7);
+          expect(response.body.comment.body).toBe("giant Jenga is better");
+          expect(response.body.comment.review_id).toBe(2);
+          expect(response.body.comment.author).toBe("mallionaire");
+          expect(response.body.comment.votes).toBe(0);
+          expect(typeof response.body.comment.created_at).toBe("string");
+          expect(response.body.comment.rating).toBe(undefined)
+          });
    });
   test("Return error 400 and message of 'bad request' if message body does not have required fields of 'username' and 'body'", () => {
     const newComment = {
