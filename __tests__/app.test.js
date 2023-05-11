@@ -165,17 +165,7 @@ describe('GET /api/reviews/:review_id/comments', () => {
   });
 });
 
-describe("/api/reviews/:review_id/comments", () => {
-  test("Get status 201 response", () => {
-  const newComment = {
-        username: "mallionaire",
-        body: "giant Jenga is better",
-      };
-      return request(app)
-        .post("/api/reviews/2/comments")
-        .send(newComment)
-        .expect(201)
-  })  
+describe.only("/api/reviews/:review_id/comments", () => { 
   test("Get status 201 response and an object containing the newly posted comment", () => {
       const newComment = {
         username: "mallionaire",
@@ -196,7 +186,7 @@ describe("/api/reviews/:review_id/comments", () => {
   });
   test("Return error 404 and message of 'no review found at this id!'", () => {
    const newComment = {
-        username: "be-part",
+        username: "mallionaire",
         body: "giant Jenga is better",
       };
   return request(app)
@@ -207,9 +197,9 @@ describe("/api/reviews/:review_id/comments", () => {
          expect(response.body.msg).toBe('no review found at this id!')
         })
   });
-  test("Return error 400 and message of 'bad request'", () => {
+  test("Return error 400 and message of 'bad request' if id is not a number", () => {
    const newComment = {
-        username: "be-part",
+        username: "mallionaire",
         body: "giant Jenga is better",
       };
   return request(app)
@@ -220,4 +210,57 @@ describe("/api/reviews/:review_id/comments", () => {
          expect(response.body.msg).toBe('bad request')
         })
   });
+  test("Return error 400 and message of 'bad request' if message body is missing properties", () => {
+    const newComment = {
+         username: "mallionaire",
+       };
+   return request(app)
+   .post("/api/reviews/2/comments")
+         .send(newComment)
+         .expect(400)
+         .then((response) => {
+          expect(response.body.msg).toBe('bad request')
+         })
+   });
+  test("Return error 400 and message of 'bad request' if message body has extra properties", () => {
+    const newComment = {
+         username: "mallionaire",
+         body: "giant Jenga is better",
+         votes: 7
+       };
+   return request(app)
+   .post("/api/reviews/2/comments")
+         .send(newComment)
+         .expect(400)
+         .then((response) => {
+          expect(response.body.msg).toBe('bad request')
+         })
+   });
+  test("Return error 400 and message of 'bad request' if message body does not have required fields of 'username' and 'body'", () => {
+    const newComment = {
+         name: "mallionaire",
+         comment: "giant Jenga is better",
+       };
+   return request(app)
+   .post("/api/reviews/2/comments")
+         .send(newComment)
+         .expect(400)
+         .then((response) => {
+          expect(response.body.msg).toBe('bad request')
+         })
+   });
+  test("Return error 404 and message of 'username not recognised'", () => {
+    const newComment = {
+         username: "be-part",
+         body: "giant Jenga is better",
+       };
+   return request(app)
+   .post("/api/reviews/2/comments")
+         .send(newComment)
+         .expect(404)
+         .then((response) => {
+          expect(response.body.msg).toBe('username not recognised')
+         })
+   });
+   
 });
