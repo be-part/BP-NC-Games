@@ -1,8 +1,9 @@
 
 const connection = require("../connection");
 const { checkReviewIdExists } = require("../utils/db.utils");
-    
- exports.fetchReviewComments = (reviewId) => {
+const usernames = require('../data/test-data/users')
+
+exports.fetchReviewComments = (reviewId) => {
      
     const queryString =
     `SELECT comments.comment_id, comments.votes, comments.created_at, comments.author, comments.body, comments.review_id FROM comments
@@ -20,5 +21,39 @@ const { checkReviewIdExists } = require("../utils/db.utils");
     .then((result) => {
         return result.rows;
     })
-    };
+};
 
+
+exports.addComment = (newComment, reviewId) => {
+    
+
+    if (!newComment.hasOwnProperty('username') || !newComment.hasOwnProperty('body')) {
+        return Promise.reject({ status: 400, msg: "bad request" })
+    }
+
+    const validUsernames = usernames.map((user) => {
+        return user.username
+    })
+    
+    if(!validUsernames.includes(newComment.username)) {
+        return Promise.reject({ status: 404, msg: "username not recognised" })
+    }
+
+    const queryString = `
+    INSERT INTO comments
+    (body, review_id, author)
+    VALUES
+    ($1, $2, $3)
+    RETURNING *`;
+
+    const valuesToAdd = [newComment.body, reviewId, newComment.username]
+        
+    return checkReviewIdExists(reviewId)
+    .then(() => {
+        return connection.query(queryString, valuesToAdd);
+    })
+    .then((result) => {
+        return result.rows;
+    })
+        
+}

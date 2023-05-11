@@ -1,6 +1,11 @@
 \c nc_games_test
 
-SELECT * FROM reviews WHERE review_id = 3;
+
+UPDATE reviews
+SET votes = votes + 2
+WHERE review_id = 1
+RETURNING *;
+
 
 
 
