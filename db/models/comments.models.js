@@ -26,7 +26,6 @@ exports.fetchReviewComments = (reviewId) => {
 
 exports.addComment = (newComment, reviewId) => {
     
-
     if (!newComment.hasOwnProperty('username') || !newComment.hasOwnProperty('body')) {
         return Promise.reject({ status: 400, msg: "bad request" })
     }
@@ -55,5 +54,4 @@ exports.addComment = (newComment, reviewId) => {
     .then((result) => {
         return result.rows;
     })
-        
-}
+};
