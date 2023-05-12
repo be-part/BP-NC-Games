@@ -1,4 +1,5 @@
 const connection = require("../connection");
+const { checkReviewIdExists } = require("../utils/db.utils");
 
 exports.fetchReviews = (reviewID) => {
     const valuesToAdd = [reviewID];
@@ -26,4 +27,36 @@ exports.fetchReviewsWithCount = () => {
     ).then((result) => {
         return result.rows
     })
+}
+
+exports.updateReviewVotes = (votes, reviewId) => {
+    
+
+    if (Object.keys(votes).length <1 ) {
+           return Promise.reject({ status: 400, msg: "bad request" })
+       }
+   
+       if (!votes.hasOwnProperty('inc_votes')) {
+           return Promise.reject({ status: 400, msg: "bad request" })
+       }
+       
+       if(typeof votes.inc_votes !== "number") {
+           return Promise.reject({ status: 400, msg: "bad request" })
+       }
+   
+       const queryString = `
+        UPDATE reviews
+        SET votes = votes + $1
+        WHERE review_id = $2
+        RETURNING *`;
+   
+       const valuesToAdd = [votes.inc_votes, reviewId]
+           
+       return checkReviewIdExists(reviewId)
+       .then(() => {
+           return connection.query(queryString, valuesToAdd);
+       })
+       .then((result) => {
+           return result.rows;
+       })
 }

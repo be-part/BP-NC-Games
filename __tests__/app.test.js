@@ -270,3 +270,129 @@ describe("POST /api/reviews/:review_id/comments", () => {
    });
    
 });
+
+describe("PATCH /api/reviews/:review_id", () => {
+  test("Get status 200 response and an object containing the updated review with votes added on", () => {
+  const newVotes = {
+        inc_votes: 20
+      };
+      return request(app)
+        .patch("/api/reviews/1")
+        .send(newVotes)
+        .expect(200)
+        .then((response) => {
+          expect(response.body.review[0].review_id).toBe(1);
+          expect(response.body.review[0].title).toBe("Agricola");
+          expect(response.body.review[0].category).toBe("euro game");
+          expect(response.body.review[0].designer).toBe("Uwe Rosenberg");
+          expect(response.body.review[0].owner).toBe("mallionaire");
+	        expect(response.body.review[0].review_body).toBe("Farmyard fun!");
+          expect(typeof response.body.review[0].review_img_url).toBe("string");
+	        expect(typeof response.body.review[0].created_at).toBe("string");
+	        expect(response.body.review[0].votes).toBe(21);
+          });
+  });
+ test("Get status 200 response and an object containing the updated review with votes subtracted", () => {
+  const newVotes = {
+        inc_votes: -1
+      };
+      return request(app)
+        .patch("/api/reviews/1")
+        .send(newVotes)
+        .expect(200)
+        .then((response) => {
+          expect(response.body.review[0].review_id).toBe(1);
+          expect(response.body.review[0].title).toBe("Agricola");
+          expect(response.body.review[0].category).toBe("euro game");
+          expect(response.body.review[0].designer).toBe("Uwe Rosenberg");
+          expect(response.body.review[0].owner).toBe("mallionaire");
+	        expect(response.body.review[0].review_body).toBe("Farmyard fun!");
+          expect(typeof response.body.review[0].review_img_url).toBe("string");
+	        expect(typeof response.body.review[0].created_at).toBe("string");
+	        expect(response.body.review[0].votes).toBe(0);
+          });
+  });
+  test("Return error 404 and message of 'no review found at this id!'", () => {
+   const newVotes = {
+        inc_votes: 20
+      };
+   return request(app)
+        .patch("/api/reviews/20")
+        .send(newVotes)
+        .expect(404)
+        .then((response) => {
+         expect(response.body.msg).toBe('no review found at this id!')
+        })
+  });
+  test("Return error 400 and message of 'bad request' if id is not a number", () => {
+     const newVotes = {
+        inc_votes: 20
+      };
+   return request(app)
+        .patch("/api/reviews/NotAnId")
+        .send(newVotes)
+        .expect(400)
+        .then((response) => {
+         expect(response.body.msg).toBe('bad request')
+        })
+  });
+test("Return error 400 and message of 'bad request' if message body is missing properties", () => {
+     const newVotes = {
+      };
+   return request(app)
+        .patch("/api/reviews/1")
+        .send(newVotes)
+        .expect(400)
+        .then((response) => {
+         expect(response.body.msg).toBe('bad request')
+        })
+  });
+  test("Get status 200 response and an object containing the updated review, ignoring extra properties", () => {
+  const newVotes = {
+        inc_votes: 1,
+	      rating: 10/10
+      };
+      return request(app)
+        .patch("/api/reviews/1")
+        .send(newVotes)
+        .expect(200)
+        .then((response) => {
+          expect(response.body.review[0].review_id).toBe(1);
+          expect(response.body.review[0].title).toBe("Agricola");
+          expect(response.body.review[0].category).toBe("euro game");
+          expect(response.body.review[0].designer).toBe("Uwe Rosenberg");
+          expect(response.body.review[0].owner).toBe("mallionaire");
+	        expect(response.body.review[0].review_body).toBe("Farmyard fun!");
+          expect(typeof response.body.review[0].review_img_url).toBe("string");
+	        expect(typeof response.body.review[0].created_at).toBe("string");
+	        expect(response.body.review[0].votes).toBe(2);
+	        expect(response.body.review[0].rating).toBe(undefined);
+          });
+    });
+
+  test("Return error 400 and message of 'bad request' if message body does not have required fields of 'inc_votes' ", () => {
+  const newVotes = {
+	votes: 20
+      };
+   return request(app)
+        .patch("/api/reviews/1")
+        .send(newVotes)
+        .expect(400)
+        .then((response) => {
+         expect(response.body.msg).toBe('bad request')
+        })
+  });
+
+  test("Return error 400 and message of 'bad request' if the value of 'inc_votes' is not a number", () => {
+  const newVotes = {
+	votes: 'twenty'
+      };
+   return request(app)
+        .patch("/api/reviews/1")
+        .send(newVotes)
+        .expect(400)
+        .then((response) => {
+         expect(response.body.msg).toBe('bad request')
+        })
+  });
+});
