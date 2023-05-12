@@ -5,11 +5,14 @@ const seed = require('../db/seeds/seed')
 const connection = require('../db/connection')
 const endpoints = require('../endpoints.json')
 
-beforeEach(() => seed(testData));
 
 afterAll(() => {
     connection.end()
 })
+describe('APP Tests', () => {
+
+  beforeEach(() => 
+  seed(testData));
 
 describe('GET /api', () => {
     test('Get status 200 response', () => {
@@ -396,4 +399,44 @@ test("Return error 400 and message of 'bad request' if message body is missing p
         })
   });
 });
+})
 
+describe('APP Tests with DELETE functions', () => {
+
+describe("DELETE /api/comments/:comment_id", () => {
+
+  beforeAll(() => 
+  seed(testData));
+
+  test("Get status 204 response ", () => {
+      return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+      });
+  test("Get '/api/reviews/2/comments'  should return an array of two comments (instead of 3)", () => {
+      return request(app)
+        .get("/api/reviews/2/comments")
+        .expect(200)
+	      .then((response) => {
+        expect(response.body.comments.length).toBe(2)
+      });
+  });
+  test("Return error 404 and message of 'no comment found at this id!' if comment_id does not exist", () => {
+   return request(app)
+        .delete("/api/comments/20")
+        .expect(404)
+        .then((response) => {
+         expect(response.body.msg).toBe('no comment found at this id!')
+        })
+  });
+  test("Return error 400 and message of 'bad request' if 'comments_id' is not a number", () => {
+      return request(app)
+        .delete("/api/comments/NotAnId")
+        .expect(400)
+	.then((response) => {
+         expect(response.body.msg).toBe('bad request')
+        })
+  });
+
+});
+});

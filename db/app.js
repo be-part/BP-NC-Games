@@ -3,7 +3,7 @@ const app = express();
 const { getCategories} = require('./controllers/categories.controllers');
 const { getEndpoints } = require('./controllers/endpoints.controller');
 const { getReviews, getReviewsWithCount, updateReview } = require('./controllers/reviews.controllers');
-const { getReviewComments, postComment } = require('./controllers/comments.controllers');
+const { getReviewComments, postComment, deleteComment } = require('./controllers/comments.controllers');
 
 app.use(express.json())
 
@@ -21,7 +21,7 @@ app.post('/api/reviews/:review_id/comments', postComment)
 
 app.patch('/api/reviews/:review_id', updateReview)
 
-
+app.delete('/api/comments/:comment_id', deleteComment)
 
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {

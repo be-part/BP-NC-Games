@@ -1,5 +1,5 @@
 
-const { fetchReviewComments, addComment } = require("../models/comments.models");
+const { fetchReviewComments, addComment, removeComment } = require("../models/comments.models");
 
 exports.getReviewComments = (request, response, next) => {
     fetchReviewComments(request.params.review_id).then((comments)=>{
@@ -19,4 +19,15 @@ exports.postComment = (request, response, next) => {
     .catch((err) => {
         next(err)
     })
-    }
+}
+
+exports.deleteComment = (request, response, next) => {
+    const commentId = request.params.comment_id
+    removeComment(commentId).then
+    (() => {
+    response.status(204).send()
+    })
+    .catch((err) => {
+      next(err)
+    })
+}
