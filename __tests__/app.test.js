@@ -399,7 +399,27 @@ test("Return error 400 and message of 'bad request' if message body is missing p
         })
   });
 });
-})
+
+describe('GET /api/users', () => {
+  test('Get status 200 response', () => {
+      return request(app).get('/api/users').expect(200);
+  });
+  test('Returns all information in the users table including username, name and avatar_url', () => {
+      return request(app).get('/api/users').then((response)=> {
+      expect(response.body.users.length).toBe(4);
+      response.body.users.forEach((user) => {
+      expect.objectContaining({
+            username: expect.any(String),
+            user: expect.any(String),
+            avatar_url: expect.any(String)
+            })
+          })
+      });
+  });
+
+  });
+});
+
 
 describe('APP Tests with DELETE functions', () => {
 
