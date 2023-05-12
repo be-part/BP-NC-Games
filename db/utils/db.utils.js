@@ -11,3 +11,12 @@ exports.checkReviewIdExists = (reviewId) => {
 });
 }
 
+exports.checkCommentIdExists = (commentId) => {
+    return connection.query(`
+        SELECT * FROM comments WHERE comment_id = $1;`, [commentId]).then((result) => {
+        if (result.rows.length === 0) {
+        return Promise.reject({ status: 404, msg: 'no comment found at this id!'})
+        }
+    
+    });
+}

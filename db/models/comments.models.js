@@ -1,6 +1,6 @@
 
 const connection = require("../connection");
-const { checkReviewIdExists } = require("../utils/db.utils");
+const { checkReviewIdExists, checkCommentIdExists } = require("../utils/db.utils");
 const usernames = require('../data/test-data/users')
 
 exports.fetchReviewComments = (reviewId) => {
@@ -55,3 +55,20 @@ exports.addComment = (newComment, reviewId) => {
         return result.rows;
     })
 };
+
+exports.removeComment = (commentId) => {
+
+    const queryString = `DELETE FROM comments
+    WHERE comment_id = $1
+    RETURNING *;`
+    
+    const valuesToAdd = [commentId]
+    
+    return checkCommentIdExists(commentId)
+        .then(() => {
+            return connection.query(queryString, valuesToAdd);
+        })
+        .then((result) => {
+            return result.rows;
+        })
+}
