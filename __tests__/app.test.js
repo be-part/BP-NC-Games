@@ -419,10 +419,10 @@ describe('GET /api/users', () => {
 });
 
 describe.skip('GET /api/reviews with queries', () => {
-  test('Get a status 200 response', () => {
+  test.only('Get a status 200 response', () => {
       return request(app).get('/api/reviews ').expect(200);
   })
-  test('Returns all reviews if no category query is specified', () => {
+  test.only('Returns all reviews if no category query is specified', () => {
       return request(app).get('/api/reviews').expect(200).then((response) => {
           expect(response.body.reviews.length).toBe(13)
           response.body.reviews.forEach((review) => {
@@ -440,7 +440,7 @@ describe.skip('GET /api/reviews with queries', () => {
           })
       })
   });
-  test('Returns reviews by specified category query', () => {
+  test.only('Returns reviews by specified category query', () => {
       return request(app).get('/api/reviews?category=social+deduction').expect(200).then((response) => {
          expect(response.body.reviews.length).toBe(11)
           response.body.reviews.forEach((review) => {
@@ -459,7 +459,7 @@ describe.skip('GET /api/reviews with queries', () => {
           })
     })
   });
-  test('Returns review objects of specified category, sorted by date (desc) by default - if no sort_by or order is specificed', () => {
+  test.only('Returns review objects of specified category, sorted by date (desc) by default - if no sort_by or order is specificed', () => {
       return request(app).get('/api/reviews?category=social+deduction').expect(200).then((response) => {
           expect(response.body.reviews).toBeSortedBy('created_at', { descending: true})
           response.body.reviews.forEach((review) => {
