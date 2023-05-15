@@ -19,6 +19,8 @@ exports.fetchReviews = (reviewID) => {
 
 exports.fetchReviewsWithCount = (category) => {
 
+    
+
     const validCategories = categories.map((category) => {
         return category.slug
     })
@@ -26,29 +28,25 @@ exports.fetchReviewsWithCount = (category) => {
     if(category !== undefined && !validCategories.includes(category)) {
         return Promise.reject({ status: 404, msg: "category not recognised" })
     }
-
-    let queryString = `SELECT reviews.owner, reviews.title, reviews.review_id, reviews.review_img_url, reviews.created_at, reviews.votes, designer, ` 
-
-    if (category) {queryString += '$1, ' 
-                    valuesToAdd.push(category)
-                } else {queryString += 'reviews.category, '}
     
-    queryString += `COUNT(comments.comment_id) AS comment_count
+
+    let queryString = `SELECT reviews.owner, reviews.title, reviews.review_id, reviews.review_img_url, reviews.created_at, reviews.votes, designer, reviews.category, COUNT(comments.comment_id) AS comment_count
     FROM reviews
     LEFT JOIN comments
-    ON reviews.review_id = comments.review_id
-    GROUP BY reviews.owner, reviews.title, reviews.review_id, reviews.review_img_url, reviews.created_at, reviews.votes, designer, 
-    `
-    
-    if (category) {queryString += '$1 ' 
-                    valuesToAdd.push(category)
-                } else {queryString += 'reviews.category '}
-
-    
-    queryString += `ORDER BY reviews.created_at DESC;`
+    ON reviews.review_id = comments.review_id `;
 
     const valuesToAdd = []
+
+    if (category) {
+    queryString += `WHERE category=$1 `;
+    valuesToAdd.push(category);
+    }
+   
+    queryString += `GROUP BY reviews.owner, reviews.title, reviews.review_id, reviews.review_img_url, reviews.created_at, reviews.votes, designer, reviews.category ORDER BY reviews.created_at DESC;`
     
+    
+    console.log(queryString)     
+
     return connection.query(queryString, valuesToAdd)
     .then((result) => {
 
