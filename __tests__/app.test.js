@@ -440,6 +440,13 @@ describe.skip('GET /api/reviews with queries', () => {
           })
       })
   });
+
+  test.only('Returns review objects sorted by date (desc) by default  - if no sort_by or order is specified', () => {
+    return request(app).get('/api/reviews').expect(200).then((response) => {
+        expect(response.body.reviews).toBeSortedBy('created_at', { descending: true})
+  })
+  });
+
   test.only('Returns reviews by specified category query', () => {
       return request(app).get('/api/reviews?category=social+deduction').expect(200).then((response) => {
          expect(response.body.reviews.length).toBe(11)
@@ -459,7 +466,7 @@ describe.skip('GET /api/reviews with queries', () => {
           })
     })
   });
-  test.only('Returns review objects of specified category, sorted by date (desc) by default - if no sort_by or order is specificed', () => {
+  test.only('Returns review objects of specified category, sorted by date (desc) by default - if no sort_by or order is specified', () => {
       return request(app).get('/api/reviews?category=social+deduction').expect(200).then((response) => {
           expect(response.body.reviews).toBeSortedBy('created_at', { descending: true})
           response.body.reviews.forEach((review) => {
@@ -479,24 +486,19 @@ describe.skip('GET /api/reviews with queries', () => {
             })
   });
 
-  test('Returns review objects sorted by date (desc) by default  - if no sort_by or order is specified', () => {
-      return request(app).get('/api/reviews').expect(200).then((response) => {
-          expect(response.body.reviews).toBeSortedBy('created_at', { descending: true})
-    })
-  });
-
   test('Returns review objects sorted by specified sort_by query in descending order if no order has been specified', () => {
       return request(app).get('/api/reviews?sort_by=votes').expect(200).then((response) => {
           expect(response.body.reviews).toBeSortedBy('votes', { descending: true})
     })
   });
 
-test('Returns review objects sorted by specified sort_by query in specified ascending order ', () => {
+  test('Returns review objects sorted by specified sort_by query in specified ascending order ', () => {
       return request(app).get('/api/reviews?sort_by=votes&order=asc').expect(200).then((response) => {
           expect(response.body.reviews).toBeSortedBy('votes')
     })
   });
-test('Returns review objects sorted by specified category query, specified sort_by query in specified order query', () => {
+
+  test('Returns review objects sorted by specified category query, specified sort_by query in specified order query', () => {
       return request(app).get('/api/reviews?category=social+deduction&sort_by=votes&order=asc').expect(200).then((response) => {
           expect(response.body.reviews).toBeSortedBy('votes')
           response.body.reviews.forEach((review) => {
@@ -516,32 +518,32 @@ test('Returns review objects sorted by specified category query, specified sort_
         })
   });
 
-test("Return error 404 and message of 'category not recognised'", () => {
+  test("Return error 404 and message of 'category not recognised'", () => {
    return request(app)
    .get("/api/reviews?category=notACategory")
          .expect(404)
          .then((response) => {
           expect(response.body.msg).toBe('category not recognised')
          })
-   });
+  });
 
-test("Return error 404 and message of 'sort_by not recognised'", () => {
+  test("Return error 404 and message of 'sort_by not recognised'", () => {
     return request(app)
     .get("/api/reviews?sort_by=notASortBy")
           .expect(404)
           .then((response) => {
            expect(response.body.msg).toBe('sort_by not recognised')
           })
-    });
+  });
 
-test("Return error 404 and message of 'order not recognised'", () => {
+  test("Return error 404 and message of 'order not recognised'", () => {
       return request(app)
       .get("/api/reviews?order=notAnOrder")
             .expect(404)
             .then((response) => {
              expect(response.body.msg).toBe('order not recognised')
             })
-      });
+  });
 
 });
 
