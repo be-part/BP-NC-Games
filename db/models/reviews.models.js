@@ -2,6 +2,7 @@ const connection = require("../connection");
 const { checkReviewIdExists } = require("../utils/db.utils");
 const categories = require('../data/test-data/categories')
 
+
 exports.fetchReviews = (reviewID) => {
     const valuesToAdd = [reviewID];
     return connection.query(
@@ -17,18 +18,16 @@ exports.fetchReviews = (reviewID) => {
            });
       };
 
-exports.fetchReviewsWithCount = (category) => {
+exports.fetchReviewsWithCount = (category, sort_by = "created_at") => {
 
+    const validSortQueries = ["title", "designer", "owner", "category", "created_at", "votes"]
+
+    const validCategories = categories.map((category) => {return category.slug})
     
 
-    const validCategories = categories.map((category) => {
-        return category.slug
-    })
-    
     if(category !== undefined && !validCategories.includes(category)) {
         return Promise.reject({ status: 404, msg: "category not recognised" })
     }
-    
 
     let queryString = `SELECT reviews.owner, reviews.title, reviews.review_id, reviews.review_img_url, reviews.created_at, reviews.votes, designer, reviews.category, COUNT(comments.comment_id) AS comment_count
     FROM reviews
@@ -40,12 +39,19 @@ exports.fetchReviewsWithCount = (category) => {
     if (category) {
     queryString += `WHERE category=$1 `;
     valuesToAdd.push(category);
-    }
+    } 
    
-    queryString += `GROUP BY reviews.owner, reviews.title, reviews.review_id, reviews.review_img_url, reviews.created_at, reviews.votes, designer, reviews.category ORDER BY reviews.created_at DESC;`
+    queryString += `GROUP BY reviews.owner, reviews.title, reviews.review_id, reviews.review_img_url, reviews.created_at, reviews.votes, designer, reviews.category` 
     
+    if (!validSortQueries.includes(sort_by)) {
+        return Promise.reject({ status: 400, msg: "invalid sort query" });
+    } else {
+        queryString += ` ORDER BY $2 DESC;`
+        valuesToAdd.push(sort_by)
+    }
     
     console.log(queryString)     
+    console.log(valuesToAdd)
 
     return connection.query(queryString, valuesToAdd)
     .then((result) => {
