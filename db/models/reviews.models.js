@@ -1,6 +1,7 @@
 const connection = require("../connection");
 const { checkReviewIdExists } = require("../utils/db.utils");
-const categories = require('../data/test-data/categories')
+const categories = require('../data/test-data/categories');
+const { Query } = require("pg");
 
 
 exports.fetchReviews = (reviewID) => {
@@ -18,16 +19,14 @@ exports.fetchReviews = (reviewID) => {
            });
       };
 
-exports.fetchReviewsWithCount = (category, sort_by = "created_at") => {
+exports.fetchReviewsWithCount = (category="TRUE", sort_by="created_at", order= "DESC") => {
 
     const validSortQueries = ["title", "designer", "owner", "category", "created_at", "votes"]
 
-    const validCategories = categories.map((category) => {return category.slug})
+    const validCategories = ["social deduction", "children's games", "dexterity", "euro game", "TRUE"]
     
+    const validOrders = ["DESC", "ASC"]
 
-    if(category !== undefined && !validCategories.includes(category)) {
-        return Promise.reject({ status: 404, msg: "category not recognised" })
-    }
 
     let queryString = `SELECT reviews.owner, reviews.title, reviews.review_id, reviews.review_img_url, reviews.created_at, reviews.votes, designer, reviews.category, COUNT(comments.comment_id) AS comment_count
     FROM reviews
@@ -35,27 +34,41 @@ exports.fetchReviewsWithCount = (category, sort_by = "created_at") => {
     ON reviews.review_id = comments.review_id `;
 
     const valuesToAdd = []
-
-    if (category) {
-    queryString += `WHERE category=$1 `;
-    valuesToAdd.push(category);
-    } 
+    
+    if(!validCategories.includes(category)) {
+        return Promise.reject({ status: 404, msg: "category not recognised" })
+    } else if (category === "TRUE") {
+        queryString += `WHERE $1 `
+        valuesToAdd.push(category)
+    } else {
+        queryString += `WHERE category=$1 `
+        valuesToAdd.push(category)
+    }
    
-    queryString += `GROUP BY reviews.owner, reviews.title, reviews.review_id, reviews.review_img_url, reviews.created_at, reviews.votes, designer, reviews.category` 
+    queryString += `GROUP BY reviews.owner, reviews.title, reviews.review_id, reviews.review_img_url, reviews.created_at, reviews.votes, designer, reviews.category ORDER BY ` 
     
     if (!validSortQueries.includes(sort_by)) {
         return Promise.reject({ status: 400, msg: "invalid sort query" });
     } else {
-        queryString += ` ORDER BY $2 DESC;`
+        queryString += `$2`
         valuesToAdd.push(sort_by)
     }
-    
-    console.log(queryString)     
-    console.log(valuesToAdd)
+
+    if(!validOrders.includes(order)) {
+        return Promise.reject({ status: 400, msg: "invalid order query" });
+    } else if (order === "DESC") {
+        queryString += ` DESC;`
+    } else if (order === "ASC") {
+        queryString += ` ASC;`
+    }
+
+        console.log(queryString)
+        console.log(valuesToAdd)
+        
 
     return connection.query(queryString, valuesToAdd)
     .then((result) => {
-
+        
         return result.rows;
     })
 }

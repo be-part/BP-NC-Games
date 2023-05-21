@@ -13,9 +13,7 @@ exports.getReviewsWithCount = (request, response, next) => {
   const category = request.query.category
 
   fetchReviewsWithCount(category).then((reviews) => {
-    //console.log(response)
-        response.status(200).send({ reviews: reviews})
-    })
+    response.status(200).send({ reviews: reviews}) })
     .catch((err) => {
       next(err)
     });

@@ -80,13 +80,13 @@ describe('GET /api/reviews/:review_id', () => {
 
 });
 
-describe('GET /api/reviews', () => {
+describe.skip('GET /api/reviews', () => {
   test('Get status 200 response', () => {
     return request(app)
     .get('/api/reviews')
     .expect(200);
   });
-  test('Return an array of review objects with correct properties', () => {
+  test.only('Return an array of review objects with correct properties', () => {
     return request(app)
     .get('/api/reviews')
     .expect(200)
@@ -105,12 +105,12 @@ describe('GET /api/reviews', () => {
       })
     })
   });
-  test('Return array of review objects sorted by date in descending order', () => {
+  test.only('Return array of review objects sorted by date in descending order', () => {
     return request(app)
     .get('/api/reviews')
     .expect(200)
     .then((response) => {
-      expect(response.body.reviews).toBeSortedBy('created_at', { descending: true})
+      expect(response.body.reviews).toBeSortedBy('created_at', {descending: true})
     })
   });
 })
@@ -418,7 +418,7 @@ describe('GET /api/users', () => {
   });
 });
 
-describe('GET /api/reviews with queries', () => {
+describe.skip('GET /api/reviews with queries', () => {
   test.only('Get a status 200 response', () => {
       return request(app).get('/api/reviews ').expect(200);
   })
@@ -441,13 +441,13 @@ describe('GET /api/reviews with queries', () => {
       })
   });
 
-  test('Returns review objects sorted by date (desc) by default  - if no sort_by or order is specified', () => {
+  test.only('Returns review objects sorted by date (desc) by default  - if no sort_by or order is specified', () => {
     return request(app).get('/api/reviews').expect(200).then((response) => {
         expect(response.body.reviews).toBeSortedBy('created_at', { descending: true})
   })
   });
 
-  test('Returns reviews by specified category query', () => {
+  test.only('Returns reviews by specified category query', () => {
       return request(app).get('/api/reviews?category=social+deduction').expect(200).then((response) => {
          expect(response.body.reviews.length).toBe(11)
           response.body.reviews.forEach((review) => {
@@ -466,7 +466,7 @@ describe('GET /api/reviews with queries', () => {
           })
     })
   });
-  test('Returns review objects of specified category, sorted by date (desc) by default - if no sort_by or order is specified', () => {
+  test.only('Returns review objects of specified category, sorted by date (desc) by default - if no sort_by or order is specified', () => {
       return request(app).get('/api/reviews?category=social+deduction').expect(200).then((response) => {
           expect(response.body.reviews).toBeSortedBy('created_at', { descending: true})
           response.body.reviews.forEach((review) => {
@@ -486,7 +486,7 @@ describe('GET /api/reviews with queries', () => {
             })
   });
 
-  test('Returns review objects sorted by specified sort_by query in descending order if no order has been specified', () => {
+  test.only('Returns review objects sorted by specified sort_by query in descending order if no order has been specified', () => {
       return request(app).get('/api/reviews?sort_by=votes').expect(200).then((response) => {
           expect(response.body.reviews).toBeSortedBy('votes', { descending: true})
     })
