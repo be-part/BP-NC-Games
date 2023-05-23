@@ -23,7 +23,7 @@
 
 This is an API that allows you to search through reviews of different board games.  
 It is built with express and Postgres.  
-Reviews contain information about various board games (both the classics and the lesser-knowns) and find useful information about them including who designed them, a description of the game and sometimes a 'helpful' image.
+Reviews contain information about various board games (both the classics and the lesser-knowns) with useful information about them including who designed them, a description of the game and sometimes a 'helpful' image.
 Users may comment on reviews and either upvote or downvote them allowing for engagement and spirited debates on everything board game!
 
 :question: [Further information about where this project came from](#further-information)
