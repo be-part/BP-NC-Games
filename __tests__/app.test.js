@@ -45,22 +45,29 @@ describe('GET /api/reviews/:review_id', () => {
   test("Get status 200 response", () => {
     return request(app).get("/api/reviews/1").expect(200);
   });
+
   test("Get review object corresponding to review_id", () => {
     return request(app)
-      .get("/api/reviews/1")
+      .get("/api/reviews/2")
       .expect(200)
       .then((response) => {
-          expect(response.body.review.review_id).toBe(1);
-          expect(typeof response.body.review.title).toBe("string");
-          expect(typeof response.body.review.review_body).toBe("string");
-          expect(typeof response.body.review.designer).toBe("string");
-          expect(typeof response.body.review.review_img_url).toBe("string");
-	        expect(typeof response.body.review.votes).toBe("number");
-	        expect(typeof response.body.review.category).toBe("string");
-	        expect(typeof response.body.review.owner).toBe("string");
-	        expect(typeof response.body.review.created_at).toBe("string");
+        expect(response.body.review.review_id).toBe(2)
+        expect(response.body.review).toEqual(
+          expect.objectContaining({
+                review_id: expect.any(Number),
+                title: expect.any(String),
+                review_body: expect.any(String),
+                designer: expect.any(String),
+                review_img_url: expect.any(String),
+                votes: expect.any(Number),
+                category: expect.any(String),
+                owner: expect.any(String),
+                created_at: expect.any(String),
+                comment_count: expect.any(String)
+          }));
       });
-  });
+  });  
+
   test("Return error 404 and message of 'no review found at this id!'", () => {
     return request(app)
       .get('/api/reviews/20')
@@ -69,6 +76,7 @@ describe('GET /api/reviews/:review_id', () => {
         expect(response.body.msg).toBe('no review found at this id!')
       })
   });
+
   test("Return error 400 and a message of 'bad request'", () => {
     return request(app)
       .get('/api/reviews/notAnID')
@@ -76,8 +84,7 @@ describe('GET /api/reviews/:review_id', () => {
       .then((response) => {
       expect(response.body.msg).toBe('bad request')
       })
-  })
-
+  });
 });
 
 describe('GET /api/reviews', () => {
@@ -408,14 +415,15 @@ describe('GET /api/users', () => {
       return request(app).get('/api/users').then((response)=> {
       expect(response.body.users.length).toBe(4);
       response.body.users.forEach((user) => {
-      expect.objectContaining({
-            username: expect.any(String),
-            user: expect.any(String),
-            avatar_url: expect.any(String)
-            })
-          })
+        expect(user).toEqual(
+          expect.objectContaining({
+              username: expect.any(String),
+              name: expect.any(String),
+              avatar_url: expect.any(String)
+              })
+            )});
       });
-  });
+    });
 });
 
 describe('GET /api/reviews with queries', () => {
@@ -426,18 +434,19 @@ describe('GET /api/reviews with queries', () => {
       return request(app).get('/api/reviews').expect(200).then((response) => {
           expect(response.body.reviews.length).toBe(13)
           response.body.reviews.forEach((review) => {
-              expect.objectContaining({
-                  review_id: expect.any(Number),
-                  title: expect.any(String),
-                  category: expect.any(String),
-                  designer: expect.any(String),
-                  owner: expect.any(String),
-                  comment_count: expect.any(Number),
-                  review_img_url: expect.any(String),
-                  created_at: expect.any(String),
-                  votes: expect.any(Number)
+              expect(review).toEqual(
+                  expect.objectContaining({
+                    review_id: expect.any(Number),
+                    title: expect.any(String),
+                    category: expect.any(String),
+                    designer: expect.any(String),
+                    owner: expect.any(String),
+                    comment_count: expect.any(String),
+                    review_img_url: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number)
                   })
-          })
+          )});
       })
   });
 
