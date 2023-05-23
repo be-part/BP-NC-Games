@@ -1,4 +1,4 @@
-# BP House of Games API 
+# BP House of Games API :game_die:
 
 ## Contents
 [Introduction](#introduction)  
