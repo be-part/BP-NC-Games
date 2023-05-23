@@ -85,7 +85,7 @@ These files need to contain the following text:
 
 > PGDATABASES=name_of_database
 
-Where **name_of_database** is the names of the databases you have been given to connect to.
+Where **name_of_database** is the name of the database you have been given to connect to.
 
 
 ## Further Information
