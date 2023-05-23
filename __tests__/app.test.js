@@ -418,7 +418,7 @@ describe('GET /api/users', () => {
   });
 });
 
-describe.skip('GET /api/reviews with queries', () => {
+describe('GET /api/reviews with queries', () => {
   test('Get a status 200 response', () => {
       return request(app).get('/api/reviews ').expect(200);
   })
@@ -527,12 +527,12 @@ describe.skip('GET /api/reviews with queries', () => {
          })
   });
 
-  test("Return error 404 and message of 'sort_by not recognised'", () => {
+  test("Return error 404 and message of 'invalid sort query'", () => {
     return request(app)
     .get("/api/reviews?sort_by=notASortBy")
           .expect(404)
           .then((response) => {
-           expect(response.body.msg).toBe('sort_by not recognised')
+           expect(response.body.msg).toBe('invalid sort query')
           })
   });
 

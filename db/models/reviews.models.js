@@ -38,15 +38,13 @@ exports.fetchReviewsWithCount = (category, sort_by="created_at", order="DESC") =
 
     if(!validCategories.includes(category) && category) {
         return Promise.reject({ status: 404, msg: "category not recognised" })
-    } else if (category) { queryString += `WHERE category=${category} `} 
+    } else if (category) { queryString += `WHERE category='${category}' `} 
 
     queryString += `GROUP BY reviews.owner, reviews.title, reviews.review_id, reviews.review_img_url, reviews.created_at, reviews.votes, designer, reviews.category ` 
     
     if (!validSortQueries.includes(sort_by)) {
-        return Promise.reject({ status: 400, msg: "invalid sort query" });
-    } else {
-        queryString += `ORDER BY ${sort_by} ${order}`
-    }
+        return Promise.reject({ status: 404, msg: "invalid sort query" });
+    } else {queryString += `ORDER BY ${sort_by} ${order}` }
 
     return connection.query(queryString)
     .then((result) => {

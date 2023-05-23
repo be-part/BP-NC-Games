@@ -14,8 +14,6 @@ exports.getReviewsWithCount = (request, response, next) => {
   const sort_by = request.query.sort_by
   const order = request.query.order
 
-  console.log(request.query)
-
   fetchReviewsWithCount(category, sort_by, order).then((reviews) => {
     response.status(200).send({ reviews: reviews}) })
     .catch((err) => {
