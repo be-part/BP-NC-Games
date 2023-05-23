@@ -9,10 +9,13 @@ exports.getReviews = (request, response, next) => {
       });
 }
 
-exports.getReviewsWithCount = (request, response) => {
-    fetchReviewsWithCount().then((reviews) => {
-        response.status(200).send({ reviews: reviews})
-    })
+exports.getReviewsWithCount = (request, response, next) => {
+  const category = request.query.category
+  const sort_by = request.query.sort_by
+  const order = request.query.order
+
+  fetchReviewsWithCount(category, sort_by, order).then((reviews) => {
+    response.status(200).send({ reviews: reviews}) })
     .catch((err) => {
       next(err)
     });

@@ -1,11 +1,16 @@
 You are now connected to database "nc_games_test" as user "bronwyn".
- comment_id |                                                       body                                                       | review_id |     author      | votes |       created_at        
-------------+------------------------------------------------------------------------------------------------------------------+-----------+-----------------+-------+-------------------------
-          1 | I loved this game too!                                                                                           |         2 | bainesface      |    16 | 2017-11-22 12:43:33.389
-          2 | My dog loved this game too!                                                                                      |         3 | mallionaire     |    13 | 2021-01-18 10:09:05.41
-          3 | I didn't know dogs could play games                                                                              |         3 | philippaclaire9 |    10 | 2021-01-18 10:09:48.11
-          4 | EPIC board game!                                                                                                 |         2 | bainesface      |    16 | 2017-11-22 12:36:03.389
-          5 | Now this is a story all about how, board games turned my life upside down                                        |         2 | mallionaire     |    13 | 2021-01-18 10:24:05.41
-          6 | Not sure about dogs, but my cat likes to get involved with board games, the boxes are their particular favourite |         3 | philippaclaire9 |    10 | 2021-03-27 19:49:48.11
-(6 rows)
+    owner    |                        title                         | review_id |                                 review_img_url                                 |       created_at        | votes |        designer        |     category     | comment_count 
+-------------+------------------------------------------------------+-----------+--------------------------------------------------------------------------------+-------------------------+-------+------------------------+------------------+---------------
+ mallionaire | Mollit elit qui incididunt veniam occaecat cupidatat |         7 | https://images.pexels.com/photos/776657/pexels-photo-776657.jpeg?w=700&h=700   | 2021-01-25 11:16:54.963 |     9 | Avery Wunzboogerz      | social deduction |             0
+ mallionaire | Dolor reprehenderit                                  |         4 | https://images.pexels.com/photos/278918/pexels-photo-278918.jpeg?w=700&h=700   | 2021-01-22 11:35:50.936 |     7 | Gamey McGameface       | social deduction |             0
+ mallionaire | Scythe; you're gonna need a bigger table!            |        12 | https://images.pexels.com/photos/4200740/pexels-photo-4200740.jpeg?w=700&h=700 | 2021-01-22 10:37:04.839 |   100 | Jamey Stegmaier        | social deduction |             0
+ bainesface  | Ultimate Werewolf                                    |         3 | https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?w=700&h=700 | 2021-01-18 10:01:41.251 |     5 | Akihisa Okui           | social deduction |             3
+ mallionaire | A truly Quacking Game; Quacks of Quedlinburg         |         9 | https://images.pexels.com/photos/279321/pexels-photo-279321.jpeg?w=700&h=700   | 2021-01-18 10:01:41.251 |    10 | Wolfgang Warsch        | social deduction |             0
+ mallionaire | Build you own tour de Yorkshire                      |        10 | https://images.pexels.com/photos/258045/pexels-photo-258045.jpeg?w=700&h=700   | 2021-01-18 10:01:41.251 |    10 | Asger Harding Granerud | social deduction |             0
+ mallionaire | That's just what an evil person would say!           |        11 | https://images.pexels.com/photos/220057/pexels-photo-220057.jpeg?w=700&h=700   | 2021-01-18 10:01:41.251 |     8 | Fiona Lohoar           | social deduction |             0
+ mallionaire | One Night Ultimate Werewolf                          |         8 | https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?w=700&h=700 | 2021-01-18 10:01:41.251 |     5 | Akihisa Okui           | social deduction |             0
+ mallionaire | Proident tempor et.                                  |         5 | https://images.pexels.com/photos/209728/pexels-photo-209728.jpeg?w=700&h=700   | 2021-01-07 09:06:08.077 |     5 | Seymour Buttz          | social deduction |             0
+ mallionaire | Occaecat consequat officia in quis commodo.          |         6 | https://images.pexels.com/photos/207924/pexels-photo-207924.jpeg?w=700&h=700   | 2020-09-13 15:19:28.077 |     8 | Ollie Tabooger         | social deduction |             0
+ mallionaire | Settlers of Catan: Don't Settle For Less             |        13 | https://images.pexels.com/photos/1153929/pexels-photo-1153929.jpeg?w=700&h=700 | 1970-01-10 03:08:38.4   |    16 | Klaus Teuber           | social deduction |             0
+(11 rows)
 
