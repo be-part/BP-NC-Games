@@ -60,7 +60,6 @@ A number of scripts have been set up for you in the package.json including one t
 
 * `npm run setup-dbs` - to setup your databases  
 * `npm run seed` - to seed your databases with the data
-* `npm run start` - will start the server listening
 
 
 ## Part 4: Running tests
