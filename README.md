@@ -21,7 +21,8 @@
 
 ## Introduction
 
-This is an API that allows you to search through reviews of different board games. 
+This is an API that allows you to search through reviews of different board games.  
+It is built with express and Postgres.  
 Reviews contain information about various board games (both the classics and the lesser-knowns) and find useful information about them including who designed them, a description of the game and sometimes a 'helpful' image.
 Users may comment on reviews and either upvote or downvote them allowing for engagement and spirited debates on everything board game!
 
@@ -37,7 +38,7 @@ https://nc-games-bp.onrender.com/api/
 
 ## Part 1: Cloning
 
-Copy the link for this repo from GitHub and then clone it into your desired location by typing `git clone repo_link_here` into your terminal.
+Copy the link for this repository from GitHub and then clone it into your desired location by typing `git clone https://github.com/be-part/BP-NC-Games.git` into your terminal.
 
 
 ## Part 2: Installing dependencies
@@ -59,6 +60,7 @@ A number of scripts have been set up for you in the package.json including one t
 
 * `npm run setup-dbs` - to setup your databases  
 * `npm run seed` - to seed your databases with the data
+* `npm run start` - will start the server listening
 
 
 ## Part 4: Running tests
