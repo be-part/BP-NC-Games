@@ -38,12 +38,13 @@ https://nc-games-bp.onrender.com/api/
 
 ## Part 1: Cloning
 
-Copy the link for this repository from GitHub and then clone it into your desired location by typing `git clone https://github.com/be-part/BP-NC-Games.git` into your terminal.
+Copy the link for this repository from GitHub and then clone it into your desired location using:  
+`git clone https://github.com/be-part/BP-NC-Games.git`
 
 
 ## Part 2: Installing dependencies
 
-In your terminal, type `npm install` to install the required dependencies for this repo, including:
+Type `npm install` to install the required dependencies for this repo, including:
 * dotenv
 * express
 * pg
@@ -56,18 +57,17 @@ In your terminal, type `npm install` to install the required dependencies for th
 
 
 ## Part 3: Seeding the local databases
-A number of scripts have been set up for you in the package.json including one to set up the test and development databases and seed them. Type the following into your terminal:
+To set up the test and development databases and seed them, type the following:
 
 * `npm run setup-dbs` - to setup your databases  
 * `npm run seed` - to seed your databases with the data
 
 
 ## Part 4: Running tests
-To run the tests there are two options:
 Tests have been divided into app tests (app.test.js) and utility tests (utils.test.js)
-To run all of the tests you can use the prewritten script in the package.json by typing `npm run test` in the termimal.
+To run all of the tests you can use `npm run test`
 
-To specifically run either app tests or utility tests, type the following into your terminal;  
+To specifically run either app tests or utility tests, use the following;  
 
 `npm run test app.test.js`  
 `npm run test utils.test.js`  
