@@ -20,11 +20,7 @@ exports.fetchReviews = (reviewID) => {
         });
 };
 
-exports.fetchReviewsWithCount = (
-  category,
-  sort_by = "created_at",
-  order = "DESC"
-) => {
+exports.fetchReviewsWithCount = (category, sort_by = "created_at", order = "DESC") => {
   const validSortQueries = [
     "title",
     "designer",
