@@ -87,7 +87,7 @@
       "comment": 
         {
           "username": "mallionaire",
-          "body": "giant Jenga is better",
+          "body": "giant Jenga is better"
         }
     }
   },
@@ -114,7 +114,6 @@
   },
   "DELETE /api/comments/:comment_id": {
     "description": "delete a comment",
-    "exampleResponse": 
-      "Status 204 - No Content. No body is returned by this endpoint."
+    "exampleResponse": "Status 204 - No Content. No body is returned by this endpoint."
   }
 }
