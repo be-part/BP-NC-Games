@@ -1,7 +1,7 @@
 
 const connection = require("../connection");
 const { checkReviewIdExists, checkCommentIdExists } = require("../utils/db.utils");
-const usernames = require('../data/test-data/users')
+//const usernames = require('../data/test-data/users')
 
 exports.fetchReviewComments = (reviewId) => {
      

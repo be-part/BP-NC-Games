@@ -532,6 +532,7 @@ describe('GET /api/reviews with queries', () => {
    .get("/api/reviews?category=notACategory")
          .expect(404)
          .then((response) => {
+
           expect(response.body.msg).toBe('category not recognised')
          })
   });

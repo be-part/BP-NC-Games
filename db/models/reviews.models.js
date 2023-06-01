@@ -30,12 +30,12 @@ exports.fetchReviewsWithCount = (category, sort_by = "created_at", order = "DESC
     "votes",
   ];
 
-  const validCategories = [
-    "social deduction",
-    "children's games",
-    "dexterity",
-    "euro game",
-  ];
+  // const validCategories = [
+  //   "social deduction",
+  //   "children's games",
+  //   "dexterity",
+  //   "euro game",
+  // ];
 
   const validOrders = ["ASC", "DESC"];
   if (!validOrders.includes(order)) {
@@ -47,9 +47,10 @@ exports.fetchReviewsWithCount = (category, sort_by = "created_at", order = "DESC
     LEFT JOIN comments
     ON reviews.review_id = comments.review_id `;
 
-  if (!validCategories.includes(category) && category) {
-    return Promise.reject({ status: 404, msg: "category not recognised" });
-  } else if (category) {
+  // if (!validCategories.includes(category) && category) {
+  //   return Promise.reject({ status: 404, msg: "category not recognised" });
+  // } else 
+  if (category) {
     queryString += `WHERE category='${category}' `;
   }
 
@@ -62,9 +63,12 @@ exports.fetchReviewsWithCount = (category, sort_by = "created_at", order = "DESC
   }
 
   return connection.query(queryString).then((result) => {
+    if (result.rows.length === 0) {return Promise.reject({ status: 404, msg: "category not recognised" })
+    }
     return result.rows;
   });
 };
+
 
 exports.updateReviewVotes = (votes, reviewId) => {
   if (Object.keys(votes).length < 1) {
