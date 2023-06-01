@@ -43,6 +43,13 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  if (err.detail === 'Key (author)=(be-part) is not present in table "users".') {
+    res.status(404).send({ msg: 'username not recognised' });
+  } else next(err);
+});
+
+app.use((err, req, res, next) => {
+  console.log(err)
     res.status(500).send('Server Error!');
 });
 

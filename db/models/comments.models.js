@@ -30,13 +30,13 @@ exports.addComment = (newComment, reviewId) => {
         return Promise.reject({ status: 400, msg: "bad request" })
     }
 
-    const validUsernames = usernames.map((user) => {
-        return user.username
-    })
+    // const validUsernames = usernames.map((user) => {
+    //     return user.username
+    // })
     
-    if(!validUsernames.includes(newComment.username)) {
-        return Promise.reject({ status: 404, msg: "username not recognised" })
-    }
+    // if(!validUsernames.includes(newComment.username)) {
+    //     return Promise.reject({ status: 404, msg: "username not recognised" })
+    // }
 
     const queryString = `
     INSERT INTO comments
@@ -53,6 +53,7 @@ exports.addComment = (newComment, reviewId) => {
     })
     .then((result) => {
         return result.rows;
+        
     })
 };
 
