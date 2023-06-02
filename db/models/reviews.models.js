@@ -28,6 +28,7 @@ exports.fetchReviewsWithCount = (category, sort_by = "created_at", order = "DESC
     "category",
     "created_at",
     "votes",
+    "comment_count"
   ];
 
   // const validCategories = [
