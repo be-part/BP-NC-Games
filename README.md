@@ -29,7 +29,9 @@ Users may comment on reviews and either upvote or downvote them allowing for eng
 :question: [Further information about where this project came from](#further-information)
 
 ## Minimum Requirements
-:warning:
+:warning: 
+Node: v19.8
+Postgres: 14.8
 
 ## Link to hosted version
 
