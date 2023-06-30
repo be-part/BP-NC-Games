@@ -1,5 +1,6 @@
+const { get } = require("../app");
 const connection = require("../connection");
-const { checkReviewIdExists } = require("../utils/db.utils");
+const { checkReviewIdExists, getAllCategories } = require("../utils/db.utils");
 const { Query } = require("pg");
 
 exports.fetchReviews = (reviewID) => {
@@ -31,13 +32,6 @@ exports.fetchReviewsWithCount = (category, sort_by = "created_at", order = "DESC
     "comment_count"
   ];
 
-  // const validCategories = [
-  //   "social deduction",
-  //   "children's games",
-  //   "dexterity",
-  //   "euro game",
-  // ];
-
   const validOrders = ["ASC", "DESC"];
   if (!validOrders.includes(order)) {
     return Promise.reject({ status: 404, msg: "invalid order" });
@@ -63,11 +57,28 @@ exports.fetchReviewsWithCount = (category, sort_by = "created_at", order = "DESC
     queryString += `ORDER BY ${sort_by} ${order}`;
   }
 
-  return connection.query(queryString).then((result) => {
-    if (result.rows.length === 0) {return Promise.reject({ status: 404, msg: "category not recognised" })
+  if (category) {
+     return getAllCategories().then((result) => {
+    if (!result.includes(category)) {
+      return Promise.reject({ status: 404, msg: "category not recognised" });
+    } else {
+      return connection.query(queryString).then((result) => {
+        return result.rows;
+      });
     }
+  })
+  } else {
+    return connection.query(queryString).then((result) => {
     return result.rows;
   });
+  }
+
+  // return connection.query(queryString).then((result) => {
+  //   if (result.rows.length === 0) {return Promise.reject({ status: 404, msg: "category not recognised" })
+  //   }
+  //   return result.rows;
+  // });
+  
 };
 
 

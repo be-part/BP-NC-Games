@@ -20,3 +20,14 @@ exports.checkCommentIdExists = (commentId) => {
     
     });
 }
+
+exports.getAllCategories = () => {
+    return connection.query(`
+        SELECT * FROM categories;`).then((result) => {
+            let categoryArray =[]
+            result.rows.forEach((item) => {
+                categoryArray.push(item.slug)
+            })
+            return categoryArray
+        })
+}
