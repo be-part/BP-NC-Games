@@ -278,6 +278,19 @@ describe("POST /api/reviews/:review_id/comments", () => {
           expect(response.body.msg).toBe('username not recognised')
          })
    });
+   test("Return error 400 and message of 'Your comment contains words that are not appropriate for our website. Please try again without using those words.'", () => {
+    const newComment = {
+         username: "be-part",
+         body: "giant Jenga is hell",
+       };
+   return request(app)
+   .post("/api/reviews/2/comments")
+         .send(newComment)
+         .expect(400)
+         .then((response) => {
+          expect(response.body.msg).toBe('Your comment contains words that are not appropriate for our website. Please try again without using those words.')
+         })
+   });
    
 });
 

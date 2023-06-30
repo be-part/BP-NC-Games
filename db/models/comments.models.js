@@ -30,6 +30,13 @@ exports.addComment = (newComment, reviewId) => {
         return Promise.reject({ status: 400, msg: "bad request" })
     }
 
+    var Filter = require('bad-words'),
+    filter = new Filter();
+ 
+    if (filter.isProfane(newComment.body) === true) {
+        return Promise.reject({status: 400, msg: "Your comment contains words that are not appropriate for our website. Please try again without using those words."})
+    };
+
     // const validUsernames = usernames.map((user) => {
     //     return user.username
     // })
